@@ -1,12 +1,12 @@
 let currentObserver = null;
 
-const observe = (fn) => {
+export const observe = (fn) => {
   currentObserver = fn;
   fn();
   currentObserver = null;
 };
 
-const observable = (obj) => {
+export const observable = (obj) => {
   const stateKeys = Object.keys(obj);
 
   for (const key of stateKeys) {
@@ -33,14 +33,3 @@ const observable = (obj) => {
 
   return obj;
 };
-
-const state = observable({ a: 10, b: 20 });
-
-observe(() => console.log(`a = ${state.a}`));
-observe(() => console.log(`b = ${state.b}`));
-observe(() => console.log(`a + b = ${state.a} + ${state.b}`));
-observe(() => console.log(`a * b = ${state.a} + ${state.b}`));
-observe(() => console.log(`a - b = ${state.a} + ${state.b}`));
-
-state.a = 100;
-state.b = 200;

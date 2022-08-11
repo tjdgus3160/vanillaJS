@@ -21,8 +21,7 @@ export default class Component {
   }
   addEvent(eventType, selector, callback) {
     const children = Array.from(this.$target.querySelectorAll(selector));
-    const isTarget = (target) =>
-      children.includes(target) || target.closest(selector);
+    const isTarget = (target) => children.includes(target) || target.closest(selector);
 
     this.$target.addEventListener(eventType, (event) => {
       if (!isTarget(event.target)) {

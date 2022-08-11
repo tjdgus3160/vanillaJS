@@ -1,4 +1,4 @@
-class Publish {
+export default class Publish {
   #state;
   #observers = new Set();
 

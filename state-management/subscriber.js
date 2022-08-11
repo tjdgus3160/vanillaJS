@@ -1,4 +1,4 @@
-class Subscriber {
+export default class Subscriber {
   #fn;
 
   constructor(subscribe) {

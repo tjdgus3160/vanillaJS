@@ -10,17 +10,33 @@ export default class Items extends Component {
 
     return `
           <ul>
-            ${items.map((item) => `<li>${item}</li>`).join("")}
+            ${items
+              .map(
+                (item, key) => `
+                <li>${item}</li>
+                <button class="deleteBtn" data-index="${key}">삭제</button>
+            `
+              )
+              .join("")}
           </ul>
-          <button id="append">추가</button>
+          <button class="addBtn">추가</button>
         `;
   }
 
   setEvent() {
-    document.querySelector("#append").addEventListener("click", () => {
+    this.$target.querySelector(".addBtn").addEventListener("click", () => {
       const { items } = this.$state;
 
       this.setState({ items: [...items, `item${items.length + 1}`] });
     });
+
+    this.$target.querySelectorAll(".deleteBtn").forEach((deleteBtn) =>
+      deleteBtn.addEventListener("click", ({ target }) => {
+        const items = [...this.$state.items];
+
+        items.splice(target.dataset.index, 1);
+        this.setState({ items });
+      })
+    );
   }
 }

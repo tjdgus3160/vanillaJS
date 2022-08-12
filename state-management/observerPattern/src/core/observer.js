@@ -47,3 +47,29 @@ export const observable = (obj) => {
 
   return obj;
 };
+
+// 최신 브라우저 Proxy 사용 가능(IE 지원안함)
+let currentProxyObserver = null;
+
+export const proxyObservable = (obj) => {
+  const observerMap = new Set();
+
+  return new Proxy(obj, {
+    get(target, name) {
+      if (currentProxyObserver) {
+        observerMap[name].add(currentProxyObserver);
+      }
+
+      return target[name];
+    },
+    set(target, name, value) {
+      if (_value === value || JSON.stringify(_value) === JSON.stringify(value)) {
+        return true;
+      }
+
+      target[name] = value;
+      observerMap[name].forEach((fn) => fn());
+      return true;
+    },
+  });
+};

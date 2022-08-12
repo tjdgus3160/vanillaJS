@@ -1,4 +1,4 @@
-import { VuexStore } from "./core/VuexStore.js";
+import { VuexStore } from "./core/Store.js";
 
 export const store = new VuexStore({
   state: {

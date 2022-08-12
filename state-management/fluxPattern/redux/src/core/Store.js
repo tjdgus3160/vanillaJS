@@ -16,7 +16,7 @@ export const createStore = (reducer) => {
     const newState = reducer(state, action);
 
     for (const [key, value] of Object.entries(newState)) {
-      if (!state[key]) {
+      if (!state.hasOwnProperty(key)) {
         continue;
       }
 

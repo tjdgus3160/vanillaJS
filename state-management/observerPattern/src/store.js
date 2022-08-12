@@ -7,7 +7,7 @@ export const store = {
   }),
   setState(newState) {
     for (const [key, value] of Object.entries(newState)) {
-      if (!this.state[key]) {
+      if (!this.state.hasOwnProperty(key)) {
         continue;
       }
 

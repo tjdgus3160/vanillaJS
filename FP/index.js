@@ -6,7 +6,7 @@ function add_maker(a) {
   };
 }
 const add5 = add_maker(5);
-// console.log(add5(5)) // 10
+add5(5); // 10
 
 // ** 함수형 프로그래밍 코드 형태(순수함수들의 조합)
 function f4(f1, f2, f3) {
@@ -29,7 +29,7 @@ f4(
 // 함수형 => move(dog);
 
 // ** 예제
-const { _filter, _map, _each } = require("./_");
+const { _filter, _map, _curry, _curryr, _get } = require("./_");
 
 const users = [
   { id: 1, name: "ID", age: 30 },
@@ -45,7 +45,20 @@ const users = [
 // 30살 이상의 이름
 const names = _map(
   _filter(users, (user) => user.age >= 30),
-  (user) => user.name
+  _get("name")
 );
 
-console.log(names);
+// curry, curryr
+const add = _curry((a, b) => a + b);
+const sub = _curryr((a, b) => a - b);
+
+const add3 = add(3);
+const sub5 = sub(5);
+
+add3(5); // 8
+sub5(10); // 5
+
+// _get
+const get_name = _get("name");
+
+get_name(users[1]);

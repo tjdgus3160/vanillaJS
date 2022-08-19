@@ -24,4 +24,18 @@ function _each(list, iter) {
   return list;
 }
 
-module.exports = { _filter, _map, _each };
+function _curry(fn) {
+  return function (a, b) {
+    return arguments.length === 2 ? fn(a, b) : (b) => fn(a, b);
+  };
+}
+
+function _curryr(fn) {
+  return function (a, b) {
+    return arguments.length === 2 ? fn(a, b) : (b) => fn(b, a);
+  };
+}
+
+const _get = _curryr((obj, key) => (obj === null ? undefined : obj[key]));
+
+module.exports = { _filter, _map, _curry, _curryr, _get };

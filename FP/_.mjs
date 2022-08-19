@@ -19,8 +19,8 @@ export function _map(list, mapper) {
 export function _each(list, iter) {
   const keys = _keys(list);
 
-  for (let i = 0; i < keys.length; i++) {
-    iter(list[keys[i]]);
+  for (const key of keys) {
+    iter(list[key]);
   }
 
   return list;
@@ -103,4 +103,38 @@ export function _reject(data, predi) {
 
 export function _compact(data) {
   return _filter(data, _identity);
+}
+
+export function _find(list, predi) {
+  const keys = _keys(list);
+
+  for (const key of keys) {
+    if (!predi(list[key])) {
+      continue;
+    }
+
+    return list[key];
+  }
+}
+
+export function _find_index(list, predi) {
+  const keys = _keys(list);
+
+  for (let i = 0; i < keys.length; i++) {
+    if (!predi(list[keys[i]])) {
+      continue;
+    }
+
+    return i;
+  }
+
+  return -1;
+}
+
+export function _some(data, predi = _identity) {
+  return _find_index(data, predi) !== -1;
+}
+
+export function _every(data, predi = _identity) {
+  return _find_index(data, _negate(predi)) == -1;
 }

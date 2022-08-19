@@ -36,6 +36,41 @@ function _curryr(fn) {
   };
 }
 
-const _get = _curryr((obj, key) => (obj === null ? undefined : obj[key]));
+// const _get1 = _curryr((obj, key) => (obj === null ? undefined : obj[key]));
 
-module.exports = { _filter, _map, _curry, _curryr, _get };
+function _get() {
+  const args = arguments;
+
+  return _curryr((obj, key) => (obj === null ? undefined : obj[key])).apply(null, args);
+}
+
+function _rest(list, num = 1) {
+  return Array.prototype.slice.call(list, num);
+}
+
+function _reduce(list, iter, memo) {
+  if (arguments.length === 2) {
+    memo = list[0];
+    list = _rest(list);
+  }
+
+  _each(list, (item) => (memo = iter(memo, item)));
+
+  return memo;
+}
+
+function _pipe() {
+  const fns = arguments;
+
+  return function (arg) {
+    return _reduce(fns, (arg, fn) => fn(arg), arg);
+  };
+}
+
+function _go(arg) {
+  const fns = _rest(arguments);
+
+  return _pipe.apply(null, fns)(arg);
+}
+
+module.exports = { _filter, _map, _curry, _curryr, _get, _reduce, _pipe, _go };

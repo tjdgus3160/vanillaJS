@@ -29,7 +29,7 @@ f4(
 // 함수형 => move(dog);
 
 // ** 예제
-const { _filter, _map, _curry, _curryr, _get } = require("./_");
+const { _filter, _map, _curry, _curryr, _get, _reduce, _pipe, _go } = require("./_");
 
 const users = [
   { id: 1, name: "ID", age: 30 },
@@ -42,8 +42,8 @@ const users = [
   { id: 8, name: "MP", age: 23 },
 ];
 
-// 30살 이상의 이름
-const names = _map(
+// map, filter
+const over_30_names = _map(
   _filter(users, (user) => user.age >= 30),
   _get("name")
 );
@@ -62,3 +62,32 @@ sub5(10); // 5
 const get_name = _get("name");
 
 get_name(users[1]);
+
+// reduce,
+_reduce([1, 2, 3], add, 0);
+_reduce([1, 2], add);
+
+// pipe ,go
+const f1 = _pipe(
+  (a) => a + 1,
+  (a) => a * 2
+);
+
+f1(1); // 4
+
+_go(
+  1,
+  (a) => a + 1,
+  (a) => a * 2,
+  console.log
+); // 4
+
+const P_filter = _curryr(_filter);
+const P_map = _curryr(_map);
+
+_go(
+  users,
+  P_filter((user) => user.age < 30),
+  P_map(_get("name")),
+  console.log
+);

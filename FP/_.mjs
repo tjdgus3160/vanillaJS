@@ -1,6 +1,6 @@
 // array_like, arguments, document.querySelectorAll 모두 사용 가능
 
-function _filter(list, predi) {
+export function _filter(list, predi) {
   const new_list = [];
 
   _each(list, (item) => predi(item) && new_list.push(item));
@@ -8,7 +8,7 @@ function _filter(list, predi) {
   return new_list;
 }
 
-function _map(list, mapper) {
+export function _map(list, mapper) {
   const new_list = [];
 
   _each(list, (item) => new_list.push(mapper(item)));
@@ -16,21 +16,23 @@ function _map(list, mapper) {
   return new_list;
 }
 
-function _each(list, iter) {
-  for (const item of list) {
-    iter(item);
+export function _each(list, iter) {
+  const keys = _keys(list);
+
+  for (let i = 0; i < keys.length; i++) {
+    iter(list[keys[i]]);
   }
 
   return list;
 }
 
-function _curry(fn) {
+export function _curry(fn) {
   return function (a, b) {
     return arguments.length === 2 ? fn(a, b) : (b) => fn(a, b);
   };
 }
 
-function _curryr(fn) {
+export function _curryr(fn) {
   return function (a, b) {
     return arguments.length === 2 ? fn(a, b) : (b) => fn(b, a);
   };
@@ -38,17 +40,17 @@ function _curryr(fn) {
 
 // const _get1 = _curryr((obj, key) => (obj === null ? undefined : obj[key]));
 
-function _get() {
+export function _get() {
   const args = arguments;
 
   return _curryr((obj, key) => (obj === null ? undefined : obj[key])).apply(null, args);
 }
 
-function _rest(list, num = 1) {
+export function _rest(list, num = 1) {
   return Array.prototype.slice.call(list, num);
 }
 
-function _reduce(list, iter, memo) {
+export function _reduce(list, iter, memo) {
   if (arguments.length === 2) {
     memo = list[0];
     list = _rest(list);
@@ -59,7 +61,7 @@ function _reduce(list, iter, memo) {
   return memo;
 }
 
-function _pipe() {
+export function _pipe() {
   const fns = arguments;
 
   return function (arg) {
@@ -67,10 +69,38 @@ function _pipe() {
   };
 }
 
-function _go(arg) {
+export function _go(arg) {
   const fns = _rest(arguments);
 
   return _pipe.apply(null, fns)(arg);
 }
 
-module.exports = { _filter, _map, _curry, _curryr, _get, _reduce, _pipe, _go };
+export function _keys(obj) {
+  return typeof obj === "object" ? Object.keys(obj) : [];
+}
+
+function _identity(val) {
+  return val;
+}
+
+export function _values(data) {
+  return _map(data, _identity);
+}
+
+export function _pluck(data, key) {
+  return _map(data, _get(key));
+}
+
+function _negate(func) {
+  return function (val) {
+    return !func(val);
+  };
+}
+
+export function _reject(data, predi) {
+  return _filter(data, _negate(predi));
+}
+
+export function _compact(data) {
+  return _filter(data, _identity);
+}

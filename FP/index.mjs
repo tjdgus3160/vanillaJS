@@ -29,7 +29,7 @@ f4(
 // 함수형 => move(dog);
 
 // ** 예제
-const { _filter, _map, _curry, _curryr, _get, _reduce, _pipe, _go } = require("./_");
+import { _filter, _map, _curry, _curryr, _get, _reduce, _pipe, _go, _pluck } from "./_.mjs";
 
 const users = [
   { id: 1, name: "ID", age: 30 },

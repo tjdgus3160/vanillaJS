@@ -138,3 +138,19 @@ export function _some(data, predi = _identity) {
 export function _every(data, predi = _identity) {
   return _find_index(data, _negate(predi)) == -1;
 }
+
+export function _min(data) {
+  return _reduce(data, (a, b) => (a < b ? a : b));
+}
+
+export function _max(data) {
+  return _reduce(data, (a, b) => (a < b ? b : a));
+}
+
+export function _min_by(data, iter) {
+  return _reduce(data, (a, b) => (iter(a) < iter(b) ? a : b));
+}
+
+export function _max_by(data, iter) {
+  return _reduce(data, (a, b) => (iter(a) < iter(b) ? b : a));
+}

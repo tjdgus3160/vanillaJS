@@ -3,7 +3,7 @@
 export function _filter(list, predi) {
   const new_list = [];
 
-  _each(list, (item) => predi(item) && new_list.push(item));
+  _each(list, (val) => predi(val) && new_list.push(val));
 
   return new_list;
 }
@@ -11,7 +11,7 @@ export function _filter(list, predi) {
 export function _map(list, mapper) {
   const new_list = [];
 
-  _each(list, (item) => new_list.push(mapper(item)));
+  _each(list, (val, key) => new_list.push(mapper(val, key)));
 
   return new_list;
 }
@@ -20,7 +20,7 @@ export function _each(list, iter) {
   const keys = _keys(list);
 
   for (const key of keys) {
-    iter(list[key]);
+    iter(list[key], key);
   }
 
   return list;
@@ -153,4 +153,28 @@ export function _min_by(data, iter) {
 
 export function _max_by(data, iter) {
   return _reduce(data, (a, b) => (iter(a) < iter(b) ? b : a));
+}
+
+function _push(obj, key, val) {
+  (obj[key] = obj[key] || []).push(val);
+
+  return obj;
+}
+
+export function _group_by(data, iter) {
+  return _reduce(data, (grouped, val) => _push(grouped, iter(val), val), {});
+}
+
+function _inc(count, key) {
+  count[key] ? count[key]++ : (count[key] = 1);
+
+  return count;
+}
+
+export function _count_by(data, iter) {
+  return _reduce(data, (count, val) => _inc(count, iter(val)), {});
+}
+
+export function _pair(data) {
+  return _map(data, (val, key) => [key, val]);
 }
